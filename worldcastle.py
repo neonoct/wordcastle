@@ -260,8 +260,9 @@ class Game:
                 if self.file_path != "words.txt":
                     self.initialize_blocks()
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RETURN:
+            if event.key == pygame.K_RETURN:#when in next level is visible, if the user presses enter proceed to the next level too
                 if self.next_level_button.is_visible:
+                    self.start_ticks = pygame.time.get_ticks() # Reset the start ticks when blocks are initialized for a new level
                     self.level += 1
                     self.initialize_blocks()
                     self.menu = False
