@@ -105,10 +105,9 @@ class Game:
     def initialize_blocks(self):
         self.blocks_popped_this_level = 0
         self.remaining_floaters = 0
-        #self.start_ticks = pygame.time.get_ticks() # Reset the start ticks when blocks are initialized for a new level
         self.countdown = 45  # Reset the countdown for the new level
         rows = [5, 3, 2, 1]
-        self.words = self.load_words_from_file(self.file_path)#another if can be added here to check if there are enough words dont reload
+        self.words = self.load_words_from_file(self.file_path)
         print(self.words)
         random.shuffle(self.words)
         self.blocks = [Block(pygame.Rect(win_width // 2 - ((row * (self.block_width + self.block_spacing) - self.block_spacing) // 2) + j * (self.block_width + self.block_spacing), 
@@ -159,7 +158,7 @@ class Game:
         
     
     def load_words_from_file(self, filename):
-        #expect at least 25 words in the file or else give an error to the user
+        #expect at least 25 words in the file or else ask the user to choose another file
         fitting_words = []
         try:
             with open(filename, 'r') as f:
@@ -335,7 +334,7 @@ def open_file_dialog():
 
     if not file_path:
         file_path = "words.txt"
-    #if the file has less than 25 words, give an erorr to the user and ask them to choose another file
+    #if the file has less than 25 words, ask them to choose another file
     try:
         with open(file_path, 'r') as f:
             word_count = 0
@@ -343,9 +342,6 @@ def open_file_dialog():
                 for word in line.strip().split():
                     word_count += 1
             if word_count < 25:
-                #print("The file you chose has less than 25 words, please choose another file.")
-                # blit to the buttom of the  screen for 3 seconds that the file has less than 25 words
-                
                 file_path = open_file_dialog()
     except FileNotFoundError:
         print(f"The file {file_path} was not found.")
@@ -383,10 +379,9 @@ def main():
     
     # Initialize the clock
     clock = pygame.time.Clock()
-     # Set your desired frame rate (e.g., 60 frames per second)
+     # Set the frame rate ( 60 frames per second)
     fps = 60
     game = Game(start_button, next_level_button, exit_button, load_button)
-    # You may need to scale the image if it doesn't match your screen size
     game.background_image = pygame.transform.scale(game.background_image, (win_width, win_height))
     while game.running:
         # Draw the background
