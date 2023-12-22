@@ -159,7 +159,7 @@ class Game:
         
     
     def load_words_from_file(self, filename):
-        
+        #expect at least 25 words in the file or else give an error to the user
         fitting_words = []
         try:
             with open(filename, 'r') as f:
@@ -335,8 +335,24 @@ def open_file_dialog():
 
     if not file_path:
         file_path = "words.txt"
+    #if the file has less than 25 words, give an erorr to the user and ask them to choose another file
+    try:
+        with open(file_path, 'r') as f:
+            word_count = 0
+            for line in f:
+                for word in line.strip().split():
+                    word_count += 1
+            if word_count < 25:
+                #print("The file you chose has less than 25 words, please choose another file.")
+                # blit to the buttom of the  screen for 3 seconds that the file has less than 25 words
+                
+                file_path = open_file_dialog()
+    except FileNotFoundError:
+        print(f"The file {file_path} was not found.")
+        file_path = open_file_dialog()
      
     return file_path
+
 def draw_button(surface, pos, playing):
     surface.blit(button_image, pos)
     if not playing:
