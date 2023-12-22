@@ -110,10 +110,11 @@ class Game:
         self.words = self.load_words_from_file(self.file_path)
         print(self.words)
         random.shuffle(self.words)
+        #this is the part where  blocks are initialized with the words
         self.blocks = [Block(pygame.Rect(win_width // 2 - ((row * (self.block_width + self.block_spacing) - self.block_spacing) // 2) + j * (self.block_width + self.block_spacing), 
                                              win_height - 10 - i * (self.block_height + self.block_spacing) - self.block_height, self.block_width, self.block_height), 
                                 self.words.pop(0), color=(255, 0, 0) if i % 2 == 0 else (0, 255, 0)) for i, row in enumerate(rows) for j in range(row)]
-    
+        
     def remove_block(self,block):       
         self.blocks.remove(block)
         play_block_remove_sound()
@@ -132,9 +133,9 @@ class Game:
             x = random.randint(0, win_width - self.block_width)
             y = random.randint(0, win_height / 2)  # Make sure it's in the upper half of the screen
             # Get a word for the block
-            word = self.words.pop(0) if self.words else "NoMoreWords"
+            word = self.words.pop(0) if self.words else "NoMoreWords" # If there are no more words, use a placeholder
             # Create and append the new block
-            if word == "NoMoreWords":
+            if word == "NoMoreWords": #to be able to see the whole word for the placeholder 
                 new_block = Block(pygame.Rect(x, y, self.block_width+45, self.block_height), word, color=GREEN, floating=True)
             else:    
                 new_block = Block(pygame.Rect(x, y, self.block_width, self.block_height), word, color=GREEN, floating=True)
@@ -236,7 +237,6 @@ class Game:
         self.play_again_button.draw(self.screen)
 
     def handle_menu_events(self, event):
-        
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.start_button.is_visible and self.start_button.is_clicked(event.pos):
                 self.start_ticks = pygame.time.get_ticks() # Reset the start ticks when blocks are initialized for a new level
@@ -271,8 +271,8 @@ class Game:
                     self.initialize_blocks()
                     self.menu = False
                     self.game = True     
-    def handle_game_events(self, event):
-        
+
+    def handle_game_events(self, event): 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 for block in self.blocks:
@@ -290,11 +290,7 @@ class Game:
                 self.user_input = self.user_input[:-1]
             else:
                 self.user_input += event.unicode
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            for block in self.blocks:
-                if block.rect.collidepoint(event.pos):
-                    self.remove_block(block)
-                    break
+
 
     def handle_game_over_events(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
