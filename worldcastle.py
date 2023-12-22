@@ -108,7 +108,6 @@ class Game:
         self.countdown = 45  # Reset the countdown for the new level
         rows = [5, 3, 2, 1]
         self.words = self.load_words_from_file(self.file_path)
-        print(self.words)
         random.shuffle(self.words)
         #this is the part where  blocks are initialized with the words
         self.blocks = [Block(pygame.Rect(win_width // 2 - ((row * (self.block_width + self.block_spacing) - self.block_spacing) // 2) + j * (self.block_width + self.block_spacing), 
@@ -241,7 +240,6 @@ class Game:
             if self.start_button.is_visible and self.start_button.is_clicked(event.pos):
                 self.start_ticks = pygame.time.get_ticks() # Reset the start ticks when blocks are initialized for a new level
                 self.level += 1  
-                print(self.level) 
                 self.menu = False
                 self.game = True
                 self.start_button.is_visible = False
@@ -249,7 +247,6 @@ class Game:
             elif self.next_level_button.is_visible and self.next_level_button.is_clicked(event.pos):
                 self.start_ticks = pygame.time.get_ticks() # Reset the start ticks when blocks are initialized for a new level
                 self.level += 1
-                print(self.level) 
                 self.initialize_blocks()
                 self.menu = False
                 self.game = True   
@@ -262,12 +259,10 @@ class Game:
                 self.file_path = open_file_dialog()
                 if self.file_path != "words.txt":
                     self.initialize_blocks()
-                print("Load button clicked")
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 if self.next_level_button.is_visible:
                     self.level += 1
-                    print(self.level) 
                     self.initialize_blocks()
                     self.menu = False
                     self.game = True     
@@ -307,7 +302,6 @@ class Game:
                 self.game_over = False
                 self.level = 1  
                 self.score = 0
-                print(self.level) 
                 self.menu = False
                 self.game = True
                 self.start_button.is_visible = False
@@ -379,6 +373,7 @@ def main():
     fps = 60
     game = Game(start_button, next_level_button, exit_button, load_button)
     game.background_image = pygame.transform.scale(game.background_image, (win_width, win_height))
+
     while game.running:
         # Draw the background
         game.screen.blit(game.background_image, (0, 0))
